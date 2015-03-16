@@ -1,52 +1,45 @@
 <DOCTYPE html>
-<html>
-  <head>
-    <title>LeapMotion Pong Game</title>
-  </head>
-  <body>
-    <script src="//js.leapmotion.com/leap-0.6.4.js"></script>
-    <script src="//js.leapmotion.com/leap-plugins-0.1.10.js"></script>
-    
-    <script type="text/javascript">
-      var cats = {};
+  <html>
+    <head>
+      <title>My Pong Game</title>
+    </head>
+    <script>
+      var context;
+      var radius = 20;
+      var x = 100;
+      var y = 200;
+      var dx = 5;
+      var dy = 5;
 
-      Leap.loop(function(frame) {
-        
-        frame.hands.forEach(function(hand, index) {
+      function init() {
+        context= myCanvas.getContext('2d');
+        setInterval(draw, 10);
+      }
 
-          var cat = ( cats[index] || (cats[index] = new Cat()) );
-          cat.setTransform(hand.screenPosition(), hand.roll());
-
-        });
-
-      }).use('screenPosition', {scale: 0.25});
-
-
-      var Cat = function() {
-        var cat = this;
-        var img = document.createElement('img');
-        img.src = 'https://s3-us-west-2.amazonaws.com/s.cdpn.io/109794/cat_2.png';
-        img.style.position = 'absolute';
-        img.onload = function () {
-          cat.setTransform([window.innerWidth/2,window.innerHeight/2], 0);
-          document.body.appendChild(img);
+      function draw() {
+        context.clearRect(0, 0, 300, 300);
+        context.beginPath();
+        context.fillStyle="#0000ff";
+        // Draws a circle of radius 20 at the coordinates 100,100 on the canvas
+        context.arc(x, y, radius, 0, Math.PI*2, true);
+        context.closePath();
+        context.fill();
+        // Boundary Logic
+        if(x < 0 + radius/2 || x > 300 - radius/2) {
+          dx=-dx;
         }
-
-        cat.setTransform = function(position, rotation) {
-
-          img.style.left = position[0] - img.width  / 2 + 'px';
-          img.style.top  = position[1] - img.height / 2 + 'px';
-
-          img.style.transform = 'rotate(' + -rotation + 'rad)';
-
-          img.style.webkitTransform = img.style.MozTransform = img.style.msTransform =
-          img.style.OTransform = img.style.transform;
-
-        };
-
-      };
-
-      cats[0] = new Cat();
+        if(y < 0 + radius/2 || y > 300 - radius/2) {
+          dy=-dy;
+        }
+        x+=dx; 
+        y+=dy;
+      }
     </script>
-  </body>
-</html>
+    
+      <body onLoad="init();">
+        <canvas id="myCanvas" width="300" height="300" >
+        </canvas>
+      </body>
+      
+  </html>
+</DOCTYPE>
