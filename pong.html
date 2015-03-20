@@ -1,16 +1,16 @@
 <DOCTYPE html>
   <html>
     <head>
-      <title>My Pong Game</title>
-
+      <title>Pong</title>
       <script src="http://code.jquery.com/jquery-1.11.2.min.js"></script>
     </head>
     <style>
       body { 
+        background-color: #000;
         margin: 0; 
         padding: 0; 
       }
-      
+
     </style>
     <script>
       var context;
@@ -19,7 +19,7 @@
       var width = $( window ).width();
       var height = $( window ).height();
 
-      // Ball properties
+      // Ball
       var radius = 20;
       var xCircle = width/2;
       var yCircle = height/2;
@@ -108,7 +108,7 @@
     </script>
     
     <body onLoad="init();">
-      <canvas id="myCanvas" style="background-color: #000">
+      <canvas id="myCanvas">
       </canvas>
     </body>
       
