@@ -7,8 +7,10 @@
     </head>
     <style>
       body { 
-        margin: 0; padding: 0; 
+        margin: 0; 
+        padding: 0; 
       }
+      
     </style>
     <script>
       var context;
@@ -19,18 +21,18 @@
 
       // Ball properties
       var radius = 20;
-      var x = width/2;
-      var y = height/2;
+      var xCircle = width/2;
+      var yCircle = height/2;
       var dx = 10;
       var dy = 10;
 
-      // User Paddle
+      // Left Paddle
       var xPad = 25;
       var yPad = 25;
       var rectWidth = 50;
       var rectHeight = 150;
       
-      var speed = 2;
+      var speed = 10;
       var amountToMove = 0;
 
       function init() {
@@ -50,11 +52,11 @@
         switch(evt.keyCode) {
 
           case 38:
-            amountToMove += 20;
+            amountToMove -= 50;
             break;
 
           case 40:
-            amountToMove -= 20;
+            amountToMove += 50;
             break;
 
         }
@@ -65,47 +67,50 @@
         context.clearRect(0, 0, width, height);
         context.beginPath();
         context.fillStyle="#fff";
+
         // Draws a circle of radius 20 at the coordinates 100,100 on the canvas
-        context.arc(x, y, radius, 0, Math.PI*2, true);
+        context.arc(xCircle, yCircle, radius, 0, Math.PI*2, true);
         context.closePath();
         context.fill();
 
-        // Draws the paddle 
+        // Boundary Logic For Window
+        if(xCircle <= 0 + radius || xCircle + radius >= width) {
+          dx =- dx;
+        }
+        if(yCircle <= 0 + radius || yCircle + radius >= height) {
+          dy=-dy;
+        }
+        xCircle += dx; 
+        yCircle += dy;
+
+        // Draws the left paddle 
         context.rect(xPad, yPad, rectWidth, rectHeight);
         context.closePath();
         context.fill();
 
         // Moves paddle
         if (amountToMove != 0) {
-          if (amountToMove > 0) {
-            yPad -= speed;
-            amountToMove -= speed;
-          }
-
           if (amountToMove < 0) {
-            yPad += speed;
+            yPad -= speed;
             amountToMove += speed;
           }
+
+          if (amountToMove > 0) {
+            yPad += speed;
+            amountToMove -= speed;
+          }
         }
 
-        // Boundary Logic
-        if(x <= 0 + radius || x + radius >= width) {
-          dx=-dx;
-        }
-        if(y <= 0 + radius || y + radius >= height) {
-          dy=-dy;
-        }
-        x+=dx; 
-        y+=dy;
+
 
       }
 
     </script>
     
-      <body onLoad="init();">
-        <canvas id="myCanvas" style="background-color: #000">
-        </canvas>
-      </body>
+    <body onLoad="init();">
+      <canvas id="myCanvas" style="background-color: #000">
+      </canvas>
+    </body>
       
   </html>
 </DOCTYPE>
