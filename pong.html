@@ -2,6 +2,8 @@
   <html>
     <head>
       <title>My Pong Game</title>
+
+      <script src="http://code.jquery.com/jquery-1.11.2.min.js"></script>
     </head>
     <script>
       var context;
@@ -11,24 +13,34 @@
       var dx = 1;
       var dy = 1;
 
+      var width = 500;
+      var height = 500;
+
       function init() {
         context= myCanvas.getContext('2d');
         setInterval(draw, 10);
+
+        jQuery('#myCanvas').attr('width',width);
+        jQuery('#myCanvas').attr('height',height);
+         
       }
 
       function draw() {
-        context.clearRect(0, 0, 300, 300);
+        context.clearRect(0, 0, width, height);
         context.beginPath();
-        context.fillStyle="#0000ff";
+        context.fillStyle="#fff";
         // Draws a circle of radius 20 at the coordinates 100,100 on the canvas
         context.arc(x, y, radius, 0, Math.PI*2, true);
         context.closePath();
         context.fill();
         // Boundary Logic
-        if(x < 0 + radius/2 || x > 300 - radius/2) {
+        console.log(x);
+        console.log(width);
+
+        if(x <= 0 + radius || x + radius >= width) {
           dx=-dx;
         }
-        if(y < 0 + radius/2 || y > 300 - radius/2) {
+        if(y <= 0 + radius || y + radius >= height) {
           dy=-dy;
         }
         x+=dx; 
@@ -37,7 +49,7 @@
     </script>
     
       <body onLoad="init();">
-        <canvas id="myCanvas" width="300" height="300" >
+        <canvas id="myCanvas" width="300" height="300" style="background-color: #000">
         </canvas>
       </body>
       
