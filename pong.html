@@ -21,14 +21,17 @@
       var radius = 20;
       var x = width/2;
       var y = height/2;
-      var dx = 1;
-      var dy = 1;
+      var dx = 10;
+      var dy = 10;
 
       // User Paddle
       var xPad = 25;
       var yPad = 25;
       var rectWidth = 50;
       var rectHeight = 150;
+      
+      var speed = 2;
+      var amountToMove = 0;
 
       function init() {
         context= myCanvas.getContext('2d');
@@ -47,11 +50,11 @@
         switch(evt.keyCode) {
 
           case 38:
-            yPad -= 10;
+            amountToMove += 20;
             break;
 
           case 40:
-            yPad += 10;
+            amountToMove -= 20;
             break;
 
         }
@@ -71,6 +74,19 @@
         context.rect(xPad, yPad, rectWidth, rectHeight);
         context.closePath();
         context.fill();
+
+        // Moves paddle
+        if (amountToMove != 0) {
+          if (amountToMove > 0) {
+            yPad -= speed;
+            amountToMove -= speed;
+          }
+
+          if (amountToMove < 0) {
+            yPad += speed;
+            amountToMove += speed;
+          }
+        }
 
         // Boundary Logic
         if(x <= 0 + radius || x + radius >= width) {
