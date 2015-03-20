@@ -13,8 +13,9 @@
       var dx = 1;
       var dy = 1;
 
-      var width = 500;
-      var height = 500;
+      var width = $( window ).width();
+      var height = $( window ).height();
+
 
       function init() {
         context= myCanvas.getContext('2d');
