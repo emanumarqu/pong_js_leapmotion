@@ -7,23 +7,50 @@
     </head>
     <script>
       var context;
-      var radius = 20;
-      var x = 100;
-      var y = 200;
-      var dx = 1;
-      var dy = 1;
 
+      // Gets window size
       var width = $( window ).width();
       var height = $( window ).height();
 
+      // Ball properties
+      var radius = 20;
+      var x = width/2;
+      var y = height/2;
+      var dx = 1;
+      var dy = 1;
+
+      // User Paddle
+      var xPad = 25;
+      var yPad = 25;
+      var rectWidth = 50;
+      var rectHeight = 150;
 
       function init() {
         context= myCanvas.getContext('2d');
         setInterval(draw, 10);
 
+        window.addEventListener('keydown', doKeyDown, true);
+
+        // Sets the width and height to canvas 
         jQuery('#myCanvas').attr('width',width);
         jQuery('#myCanvas').attr('height',height);
          
+      }
+
+      function doKeyDown(evt) {
+        console.log(evt.keyCode)
+        switch(evt.keyCode) {
+
+          case 38:
+            yPad -= 10;
+            break;
+
+          case 40:
+            yPad += 10;
+            break;
+
+        }
+        return false;
       }
 
       function draw() {
@@ -34,10 +61,13 @@
         context.arc(x, y, radius, 0, Math.PI*2, true);
         context.closePath();
         context.fill();
-        // Boundary Logic
-        console.log(x);
-        console.log(width);
 
+        // Draws the paddle 
+        context.rect(xPad, yPad, rectWidth, rectHeight);
+        context.closePath();
+        context.fill();
+
+        // Boundary Logic
         if(x <= 0 + radius || x + radius >= width) {
           dx=-dx;
         }
@@ -46,11 +76,13 @@
         }
         x+=dx; 
         y+=dy;
+
       }
+
     </script>
     
       <body onLoad="init();">
-        <canvas id="myCanvas" width="300" height="300" style="background-color: #000">
+        <canvas id="myCanvas" style="background-color: #000">
         </canvas>
       </body>
       
