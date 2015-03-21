@@ -35,12 +35,15 @@
       var speed = 5;
       var amountToMove = 0;
 
+      
+
 
       function init() {
-        context= myCanvas.getContext('2d');
+        context = myCanvas.getContext('2d');
         setInterval(draw, 10);
 
-        window.addEventListener('keydown', doKeyDown, true);
+        // window.addEventListener('keydown', doKeyDown, true);
+        document.onkeydown = checkKey;
 
         // Sets the width and height to canvas 
         jQuery('#myCanvas').attr('width',width);
@@ -48,21 +51,36 @@
          
       }
 
-      function doKeyDown(evt) {
-        console.log(evt.keyCode)
-        switch(evt.keyCode) {
+      // function doKeyDown(evt) {
+      //   console.log(evt.keyCode)
+      //   switch(evt.keyCode) {
 
-          case 38:
-            amountToMove -= 50;
-            break;
+      //     case 38:
+      //       if ()
+      //       // amountToMove -= 20;
+      //       break;
 
-          case 40:
-            amountToMove += 50;
-            break;
+      //     case 40:
+      //       // amountToMove += 20;
+      //       break;
 
+      //   }
+      //   return false;
+      // }
+
+      function checkKey(e) {
+        e = e || window.event;
+
+        if (e.keyCode == '38') {
+          yPad -= speed;
+          console.log("Up key pressed");
         }
-        return false;
+        if (e.keyCode == '40') {
+          yPad += speed;
+          console.log("Down key pressed");
+        }
       }
+
 
       function draw() {
         context.clearRect(0, 0, width, height);
@@ -74,7 +92,7 @@
         context.closePath();
         context.fill();
 
-        // Boundary Logic For Window
+        // Boundary logic for window
         if(xCircle <= 0 + radius || xCircle + radius >= width) {
           dx =- dx;
         }
@@ -97,18 +115,18 @@
         context.closePath();
         context.fill();
 
-        // Moves paddle
-        if (amountToMove != 0) {
-          if (amountToMove < 0) {
-            yPad -= speed;
-            amountToMove += speed;
-          }
+        // // Moves paddle
+        // if (amountToMove != 0) {
+        //   if (amountToMove < 0) {
+        //     yPad -= speed;
+        //     amountToMove += speed;
+        //   }
 
-          if (amountToMove > 0) {
-            yPad += speed;
-            amountToMove -= speed;
-          }
-        }
+        //   if (amountToMove > 0) {
+        //     yPad += speed;
+        //     amountToMove -= speed;
+        //   }
+        // }
 
 
 
