@@ -23,68 +23,43 @@
       var radius = 20;
       var xCircle = width/2;
       var yCircle = height/2;
-      var dx = 10;
-      var dy = 10;
+      var dx = 5;
+      var dy = 5;
 
       // Left Paddle
-      var xPad = 25;
-      var yPad = 25;
+      var xPad = 100;
+      var yPad = 30;
       var rectWidth = 50;
       var rectHeight = 150;
-
       var speed = 5;
-      var move = 0;
+      var amountToMove = 0;
 
-      var toggleButton = false;
-      var toggleMove = false;
-
-
-      // $(document).keydown(function(e) {
-      //     switch(e.which) {
-      //     case 38:
-      //       yPad -= speed;
-      //       break;
-
-      //     case 40:
-      //       yPad += speed;
-      //       break;
-
-      //     default: return; // exit this handler for other keys
-      //   }
-      //   e.preventDefault(); // prevent the default action (scroll / move caret)
-      // });
-    
-      $(document).keydown(function(e){
-
-        if (e.keyCode != 38 || e.keyCode != 40){
-          
-
-          if (e.keyCode == 38){
-            move = 1;
-          }
-          if (e.keyCode == 40){
-            move = -1;
-          }
-
-          move = 0;
-        }
-        
-        
-
-
-
-
-        console.log(move);
-      });
+      
      
       function init() {
         context = myCanvas.getContext('2d');
         setInterval(draw, 10);
         
+        window.addEventListener('keydown', doKeyDown, true);
+
         // Sets the width and height to canvas 
         jQuery('#myCanvas').attr('width',width);
         jQuery('#myCanvas').attr('height',height);
          
+      }
+
+       function doKeyDown(evt) {
+        console.log(evt.keyCode);
+        switch(evt.keyCode) {
+          case 38:
+            amountToMove -= 100;
+            break;
+
+          case 40:
+            amountToMove += 100;
+            break;
+        }
+        return false;
       }
 
       function draw() {
@@ -92,10 +67,29 @@
         context.beginPath();
         context.fillStyle="#fff";
 
-        // Draws the left paddle 
+        // Draw left paddle 
         context.rect(xPad, yPad, rectWidth, rectHeight);
         context.closePath();
         context.fill();
+
+        // Move paddle
+        if (amountToMove != 0) {
+          if (amountToMove < 0) {
+            amountToMove += speed;
+            yPad -= speed;
+          }
+          if (amountToMove > 0) {
+            amountToMove -= speed;
+            yPad += speed;
+          }
+          // Continuous movement
+          if (yPad + rectHeight < 0) {
+              yPad = height;
+          }
+          if (yPad > height) {
+            yPad = 0 - rectHeight;
+          }
+        }
 
         // Draws ball
         context.arc(xCircle, yCircle, radius, 0, Math.PI*2, true);
@@ -103,13 +97,13 @@
         context.fill();
 
         // Boundary logic for window
-        if(xCircle <= 0 + radius || xCircle + radius >= width) {
+        if (xCircle + radius >= width) {
           dx =- dx;
         }
         if(yCircle <= 0 + radius || yCircle + radius >= height) {
           dy =- dy;
         }
-        xCircle += dx; 
+        xCircle += dx;
         yCircle += dy;
         // Boundary logic for paddles
         if (xCircle < xPad + rectWidth && xCircle + radius*2 > xPad &&
@@ -118,20 +112,15 @@
           dy =- dy;
         }
 
-        // Animate paddle
-        if (move ==  1) {
+        
 
-        }
-        if (move ==  -1) {
-          
-        }
-        if (move ==  0) {
+      }
+
+      function gameOver() {
+        if(xCircle <= 0 + radius) {
           
         }
       }
-
-
-
     </script>
     
     <body onLoad="init();">
