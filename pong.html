@@ -35,53 +35,57 @@
       var speed = 5;
       var move = 0;
 
-      $(document).keydown(function(e) {
-          switch(e.which) {
-          case 38:
-            yPad -= speed;
-            break;
+      var toggleButton = false;
+      var toggleMove = false;
 
-          case 40:
-            yPad += speed;
-            break;
 
-          default: return; // exit this handler for other keys
+      // $(document).keydown(function(e) {
+      //     switch(e.which) {
+      //     case 38:
+      //       yPad -= speed;
+      //       break;
+
+      //     case 40:
+      //       yPad += speed;
+      //       break;
+
+      //     default: return; // exit this handler for other keys
+      //   }
+      //   e.preventDefault(); // prevent the default action (scroll / move caret)
+      // });
+    
+      $(document).keydown(function(e){
+
+        if (e.keyCode != 38 || e.keyCode != 40){
+          
+
+          if (e.keyCode == 38){
+            move = 1;
+          }
+          if (e.keyCode == 40){
+            move = -1;
+          }
+
+          move = 0;
         }
-        e.preventDefault(); // prevent the default action (scroll / move caret)
+        
+        
+
+
+
+
+        console.log(move);
       });
      
       function init() {
         context = myCanvas.getContext('2d');
         setInterval(draw, 10);
-
-        // document.onkeydown = checkKey;
-
+        
         // Sets the width and height to canvas 
         jQuery('#myCanvas').attr('width',width);
         jQuery('#myCanvas').attr('height',height);
          
       }
-
-      // function checkKey(e) {
-      //   e = e || window.event;
-
-      //   if (e.keyCode == '38') {
-      //     move = 1;
-      //   }
-      //   else {
-      //     move = 0;
-      //   }
-
-      //   if (e.keyCode == '40') {
-      //     move = -1;
-      //   }
-      //   else {
-      //     move = 0;
-      //   }
-
-        
-      // }
-
 
       function draw() {
         context.clearRect(0, 0, width, height);
@@ -114,8 +118,16 @@
           dy =- dy;
         }
 
+        // Animate paddle
+        if (move ==  1) {
 
-      
+        }
+        if (move ==  -1) {
+          
+        }
+        if (move ==  0) {
+          
+        }
       }
 
 
