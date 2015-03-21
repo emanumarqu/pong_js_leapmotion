@@ -31,9 +31,10 @@
       var yPad = 25;
       var rectWidth = 50;
       var rectHeight = 150;
-      
-      var speed = 10;
+
+      var speed = 5;
       var amountToMove = 0;
+
 
       function init() {
         context= myCanvas.getContext('2d');
@@ -68,7 +69,7 @@
         context.beginPath();
         context.fillStyle="#fff";
 
-        // Draws a circle of radius 20 at the coordinates 100,100 on the canvas
+        // Draws ball
         context.arc(xCircle, yCircle, radius, 0, Math.PI*2, true);
         context.closePath();
         context.fill();
@@ -78,10 +79,18 @@
           dx =- dx;
         }
         if(yCircle <= 0 + radius || yCircle + radius >= height) {
-          dy=-dy;
+          dy =- dy;
         }
         xCircle += dx; 
         yCircle += dy;
+        // Boundary logic for paddles
+        if (xCircle < xPad + rectWidth && xCircle + radius*2 > xPad &&
+            yCircle < yPad + rectHeight && yCircle + radius*2 > yPad) {
+
+          dx =- dx;
+          dy =- dy;
+          
+        }
 
         // Draws the left paddle 
         context.rect(xPad, yPad, rectWidth, rectHeight);
@@ -103,7 +112,10 @@
 
 
 
+
       }
+
+
 
     </script>
     
