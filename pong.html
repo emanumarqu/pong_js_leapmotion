@@ -33,17 +33,28 @@
       var rectHeight = 150;
 
       var speed = 5;
-      var amountToMove = 0;
+      var move = 0;
 
-      
+      $(document).keydown(function(e) {
+          switch(e.which) {
+          case 38:
+            yPad -= speed;
+            break;
 
+          case 40:
+            yPad += speed;
+            break;
 
+          default: return; // exit this handler for other keys
+        }
+        e.preventDefault(); // prevent the default action (scroll / move caret)
+      });
+     
       function init() {
         context = myCanvas.getContext('2d');
         setInterval(draw, 10);
 
-        // window.addEventListener('keydown', doKeyDown, true);
-        document.onkeydown = checkKey;
+        // document.onkeydown = checkKey;
 
         // Sets the width and height to canvas 
         jQuery('#myCanvas').attr('width',width);
@@ -51,41 +62,36 @@
          
       }
 
-      // function doKeyDown(evt) {
-      //   console.log(evt.keyCode)
-      //   switch(evt.keyCode) {
+      // function checkKey(e) {
+      //   e = e || window.event;
 
-      //     case 38:
-      //       if ()
-      //       // amountToMove -= 20;
-      //       break;
-
-      //     case 40:
-      //       // amountToMove += 20;
-      //       break;
-
+      //   if (e.keyCode == '38') {
+      //     move = 1;
       //   }
-      //   return false;
+      //   else {
+      //     move = 0;
+      //   }
+
+      //   if (e.keyCode == '40') {
+      //     move = -1;
+      //   }
+      //   else {
+      //     move = 0;
+      //   }
+
+        
       // }
-
-      function checkKey(e) {
-        e = e || window.event;
-
-        if (e.keyCode == '38') {
-          yPad -= speed;
-          console.log("Up key pressed");
-        }
-        if (e.keyCode == '40') {
-          yPad += speed;
-          console.log("Down key pressed");
-        }
-      }
 
 
       function draw() {
         context.clearRect(0, 0, width, height);
         context.beginPath();
         context.fillStyle="#fff";
+
+        // Draws the left paddle 
+        context.rect(xPad, yPad, rectWidth, rectHeight);
+        context.closePath();
+        context.fill();
 
         // Draws ball
         context.arc(xCircle, yCircle, radius, 0, Math.PI*2, true);
@@ -104,33 +110,12 @@
         // Boundary logic for paddles
         if (xCircle < xPad + rectWidth && xCircle + radius*2 > xPad &&
             yCircle < yPad + rectHeight && yCircle + radius*2 > yPad) {
-
           dx =- dx;
           dy =- dy;
-          
         }
 
-        // Draws the left paddle 
-        context.rect(xPad, yPad, rectWidth, rectHeight);
-        context.closePath();
-        context.fill();
 
-        // // Moves paddle
-        // if (amountToMove != 0) {
-        //   if (amountToMove < 0) {
-        //     yPad -= speed;
-        //     amountToMove += speed;
-        //   }
-
-        //   if (amountToMove > 0) {
-        //     yPad += speed;
-        //     amountToMove -= speed;
-        //   }
-        // }
-
-
-
-
+      
       }
 
 
