@@ -1,9 +1,11 @@
 <DOCTYPE html>
   <html>
+
     <head>
       <title>Pong</title>
       <script src="http://code.jquery.com/jquery-1.11.2.min.js"></script>
     </head>
+
     <style>
       body { 
         background-color: #000;
@@ -12,6 +14,7 @@
       }
 
     </style>
+
     <script>
       var context;
 
@@ -34,7 +37,13 @@
       var speed = 5;
       var amountToMove = 0;
 
-      
+      // Right Paddle 
+      var xPadRight = width - 200;
+      var yPadRight = 30;
+      var rectWidthRight = 50;
+      var rectHeightRight = 150;
+      var speedRight = 5;
+      var amountToMoveRight = 0; 
      
       function init() {
         context = myCanvas.getContext('2d');
@@ -52,11 +61,19 @@
         console.log(evt.keyCode);
         switch(evt.keyCode) {
           case 38:
-            amountToMove -= 100;
+            amountToMove -= 30;
             break;
 
           case 40:
-            amountToMove += 100;
+            amountToMove += 30;
+            break;
+
+          case 37:
+            amountToMoveRight -= 30;
+            break;
+
+          case 39:
+            amountToMoveRight += 30;
             break;
         }
         return false;
@@ -72,15 +89,15 @@
         context.closePath();
         context.fill();
 
-        // Move paddle
+        // Move left paddle
         if (amountToMove != 0) {
           if (amountToMove < 0) {
-            amountToMove += speed;
             yPad -= speed;
+            amountToMove += speed;
           }
           if (amountToMove > 0) {
-            amountToMove -= speed;
             yPad += speed;
+            amountToMove -= speed;
           }
           // Continuous movement
           if (yPad + rectHeight < 0) {
@@ -91,13 +108,37 @@
           }
         }
 
+        // Draw right paddle 
+        context.rect(xPadRight, yPadRight, rectWidthRight, rectHeightRight);
+        context.closePath();
+        context.fill();
+
+        // Move right paddle
+        if (amountToMoveRight != 0) {
+          if (amountToMoveRight < 0) {
+            yPadRight -= speedRight;
+            amountToMoveRight += speedRight;
+          }
+          if (amountToMoveRight > 0) {
+            yPadRight += speedRight;
+            amountToMoveRight -= speedRight;
+          }
+          // Continuous movement
+          if (yPadRight + rectHeightRight < 0) {
+              yPadRight = height;
+          }
+          if (yPadRight > height) {
+            yPadRight = 0 - rectHeightRight;
+          }
+        }
+
         // Draws ball
         context.arc(xCircle, yCircle, radius, 0, Math.PI*2, true);
         context.closePath();
         context.fill();
 
         // Boundary logic for window
-        if (xCircle + radius >= width) {
+        if (xCircle <= 0 + radius || xCircle + radius >= width) {
           dx =- dx;
         }
         if(yCircle <= 0 + radius || yCircle + radius >= height) {
@@ -106,8 +147,13 @@
         xCircle += dx;
         yCircle += dy;
         // Boundary logic for paddles
-        if (xCircle < xPad + rectWidth && xCircle + radius*2 > xPad &&
-            yCircle < yPad + rectHeight && yCircle + radius*2 > yPad) {
+        if (xCircle - radius < xPad + rectWidth && xCircle + radius > xPad &&
+            yCircle < yPad + rectHeight && yCircle + radius > yPad) {
+          dx =- dx;
+          dy =- dy;
+        }
+        if (xCircle + radius > xPadRight && xCircle - radius < xPadRight + rectWidthRight &&
+            yCircle < yPadRight + rectHeightRight && yCircle + radius > yPadRight) {
           dx =- dx;
           dy =- dy;
         }
