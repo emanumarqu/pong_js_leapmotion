@@ -12,6 +12,9 @@
       }
     </style>
     <script>
+      var width = $( window ).width();
+      var height = $( window ).height();
+      
       var canvas = document.getElementById('canvas');
     
       // Ball
@@ -65,8 +68,12 @@
           requestAnimationFrame(render);
         }
         render();
-       
-       
+        
+        var animate = function(prop, val, dur) {
+          
+          
+          
+        }
        
         
       }
