@@ -1,178 +1,78 @@
 <DOCTYPE html>
   <html>
-
     <head>
-      <title>Pong</title>
+      <title>Pong Animation Test</title>
       <script src="http://code.jquery.com/jquery-1.11.2.min.js"></script>
     </head>
-
     <style>
       body { 
         background-color: #000;
         margin: 0; 
         padding: 0; 
       }
-
     </style>
-
     <script>
-      var context;
-
-      // Gets window size
-      var width = $( window ).width();
-      var height = $( window ).height();
-
+      var canvas = document.getElementById('canvas');
+    
       // Ball
-      var radius = 20;
-      var xCircle = width/2;
-      var yCircle = height/2;
-      var dx = 5;
-      var dy = 5;
-
+      var ball = {
+        'radius': 20,
+        'x': width/2,
+        'y': height/2, 
+        'directionX': 5, 
+        'directionY': 5
+      };
+      
       // Left Paddle
-      var xPad = 100;
-      var yPad = 30;
-      var rectWidth = 50;
-      var rectHeight = 150;
-      var speed = 5;
-      var amountToMove = 0;
-
+      var leftPaddle = {
+        'x': 100,
+        'y': 30,
+        'width': 50,
+        'height': 150,
+        'speed': 5,
+        'amountToMove': 0
+      };
+      
       // Right Paddle 
-      var xPadRight = width - 200;
-      var yPadRight = 30;
-      var rectWidthRight = 50;
-      var rectHeightRight = 150;
-      var speedRight = 5;
-      var amountToMoveRight = 0; 
-     
-      function init() {
-        context = myCanvas.getContext('2d');
-        setInterval(draw, 10);
+      var rightPaddle = {
+        'x': width - 200, 
+        'y': 30, 
+        'width': 50, 
+        'height': 150, 
+        'speed': 5, 
+        'amountToMove': 0
+      };
+      
+      var requestAnimationFrame =  
+        window.requestAnimationFrame ||
+        window.webkitRequestAnimationFrame ||
+        window.mozRequestAnimationFrame ||
+        window.msRequestAnimationFrame ||
+        window.oRequestAnimationFrame ||
+        function(callback) {
+          return setTimeout(callback, 1);
+        };
+      
+      if(canvas.getContext) {
+        var context = canvas.getContext('2d');
         
-        window.addEventListener('keydown', doKeyDown, true);
-
-        // Sets the width and height to canvas 
-        jQuery('#myCanvas').attr('width',width);
-        jQuery('#myCanvas').attr('height',height);
-         
-      }
-
-       function doKeyDown(evt) {
-        console.log(evt.keyCode);
-        switch(evt.keyCode) {
-          case 38:
-            amountToMove -= 30;
-            break;
-
-          case 40:
-            amountToMove += 30;
-            break;
-
-          case 37:
-            amountToMoveRight -= 30;
-            break;
-
-          case 39:
-            amountToMoveRight += 30;
-            break;
+        var render = function() {
+          context.clearRect(0, 0, canvas.width, canvas.height);
+          context.beginPath();
+          context.rect(leftPaddle.x, leftPaddle.y, leftPaddle.width, leftPaddle.height);
+          content.fillStyle = "#fff";
+          context.fill();
+          requestAnimationFrame(render);
         }
-        return false;
-      }
-
-      function draw() {
-        context.clearRect(0, 0, width, height);
-        context.beginPath();
-        context.fillStyle="#fff";
-
-        // Draw left paddle 
-        context.rect(xPad, yPad, rectWidth, rectHeight);
-        context.closePath();
-        context.fill();
-
-        // Move left paddle
-        if (amountToMove != 0) {
-          if (amountToMove < 0) {
-            yPad -= speed;
-            amountToMove += speed;
-          }
-          if (amountToMove > 0) {
-            yPad += speed;
-            amountToMove -= speed;
-          }
-          // Continuous movement
-          if (yPad + rectHeight < 0) {
-              yPad = height;
-          }
-          if (yPad > height) {
-            yPad = 0 - rectHeight;
-          }
-        }
-
-        // Draw right paddle 
-        context.rect(xPadRight, yPadRight, rectWidthRight, rectHeightRight);
-        context.closePath();
-        context.fill();
-
-        // Move right paddle
-        if (amountToMoveRight != 0) {
-          if (amountToMoveRight < 0) {
-            yPadRight -= speedRight;
-            amountToMoveRight += speedRight;
-          }
-          if (amountToMoveRight > 0) {
-            yPadRight += speedRight;
-            amountToMoveRight -= speedRight;
-          }
-          // Continuous movement
-          if (yPadRight + rectHeightRight < 0) {
-              yPadRight = height;
-          }
-          if (yPadRight > height) {
-            yPadRight = 0 - rectHeightRight;
-          }
-        }
-
-        // Draws ball
-        context.arc(xCircle, yCircle, radius, 0, Math.PI*2, true);
-        context.closePath();
-        context.fill();
-
-        // Boundary logic for window
-        if (xCircle <= 0 + radius || xCircle + radius >= width) {
-          dx =- dx;
-        }
-        if(yCircle <= 0 + radius || yCircle + radius >= height) {
-          dy =- dy;
-        }
-        xCircle += dx;
-        yCircle += dy;
-        // Boundary logic for paddles
-        if (xCircle - radius < xPad + rectWidth && xCircle + radius > xPad &&
-            yCircle < yPad + rectHeight && yCircle + radius > yPad) {
-          dx =- dx;
-          dy =- dy;
-        }
-        if (xCircle + radius > xPadRight && xCircle - radius < xPadRight + rectWidthRight &&
-            yCircle < yPadRight + rectHeightRight && yCircle + radius > yPadRight) {
-          dx =- dx;
-          dy =- dy;
-        }
-
+        render();
+       
+       
+       
         
-
-      }
-
-      function gameOver() {
-        if(xCircle <= 0 + radius) {
-          
-        }
       }
     </script>
-    
-    <body onLoad="init();">
-      <canvas id="myCanvas">
-      </canvas>
+    <body>
+      <canvas id="canvas">Sorry, your browser is not supported. Update or use another browser.</canvas>
     </body>
-      
   </html>
 </DOCTYPE>
